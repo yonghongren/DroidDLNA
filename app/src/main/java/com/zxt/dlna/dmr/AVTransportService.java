@@ -59,6 +59,7 @@ public class AVTransportService extends AbstractAVTransportService {
     public void setAVTransportURI(UnsignedIntegerFourBytes instanceId,
                                   String currentURI,
                                   String currentURIMetaData) throws AVTransportException {
+        Log.d(TAG, "i am here test uri yangyb" );
         Log.d(TAG, currentURI + "---" +currentURIMetaData );
         URI uri;
         try {
@@ -68,7 +69,9 @@ public class AVTransportService extends AbstractAVTransportService {
                     ErrorCode.INVALID_ARGS, "CurrentURI can not be null or malformed"
             );
         }
-
+        Log.d(TAG, "i am here after URI yangyb" );
+        //uri: http://192.168.20.107:8602/file?sid=84.mp3
+        /*校验uri有效性有问题，给注释掉就好了，这块需要检查一下，或者是否直接避开 modified by yangyb
         if (currentURI.startsWith("http:")) {
             try {
                 HttpFetch.validate(URIUtil.toURL(uri));
@@ -81,7 +84,8 @@ public class AVTransportService extends AbstractAVTransportService {
             throw new AVTransportException(
                     ErrorCode.INVALID_ARGS, "Only HTTP and file: resource identifiers are supported"
             );
-        }
+        }*/
+        Log.d(TAG, "i am here currentURI.startsWith yangyb" );
 
         // TODO: Check mime type of resource against supported types
         // TODO: DIDL fragment parsing and handling of currentURIMetaData
@@ -93,10 +97,11 @@ public class AVTransportService extends AbstractAVTransportService {
         } else if (currentURIMetaData.contains("object.item.audioItem")) {
             type = "audio";
         }
+        Log.d(TAG, "i am here URI contains yangyb" );
         String name = currentURIMetaData.substring(currentURIMetaData.indexOf("<dc:title>") + 10,
                 currentURIMetaData.indexOf("</dc:title>"));
         Log.d(TAG, name);
-
+        Log.d(TAG,"after deal uri");
         getInstance(instanceId).setURI(uri,type,name,currentURIMetaData);
     }
 

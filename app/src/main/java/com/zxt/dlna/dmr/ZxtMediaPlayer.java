@@ -62,6 +62,7 @@ public class ZxtMediaPlayer {
         this.renderingControlLastChange = renderingControlLastChange;
 
         try {
+            Log.i(TAG,"i am here yangyb");
             // Disconnect the old bus listener
             /* TODO: That doesn't work for some reason...
             getPipeline().getBus().disconnect(
