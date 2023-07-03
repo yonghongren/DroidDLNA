@@ -48,23 +48,26 @@ public class AndroidNetworkAddressFactory extends NetworkAddressFactoryImpl {
     @Override
     protected boolean isUsableAddress(NetworkInterface networkInterface, InetAddress address) {
         boolean result = super.isUsableAddress(networkInterface, address);
-        if (result) {
-            // TODO: Workaround Android DNS reverse lookup issue, still a problem on ICS+?
-            // http://4thline.org/projects/mailinglists.html#nabble-td3011461
-            String hostName = address.getHostAddress();
-            try {
-                Field field = InetAddress.class.getDeclaredField("hostName");
-                field.setAccessible(true);
-                field.set(address, hostName);
-            } catch (Exception ex) {
-                log.log(Level.SEVERE,
-                    "Failed injecting hostName to work around Android InetAddress DNS bug: " + address,
-                    ex
-                );
-                return false;
-            }
-        }
+        // InetAddress.class.getDeclaredField("hostName"); fails:
+        // java.lang.NoSuchFieldException: No field hostName in class Ljava/net/InetAddress; (declaration of 'java.net.InetAddress' appears in /apex/com.android.art/javalib/core-oj.jar)
         return result;
+//        if (result) {
+//            // TODO: Workaround Android DNS reverse lookup issue, still a problem on ICS+?
+//            // http://4thline.org/projects/mailinglists.html#nabble-td3011461
+//            String hostName = address.getHostAddress();
+//            try {
+//                Field field = InetAddress.class.getDeclaredField("hostName");
+//                field.setAccessible(true);
+//                field.set(address, hostName);
+//            } catch (Exception ex) {
+//                log.log(Level.SEVERE,
+//                    "Failed injecting hostName to work around Android InetAddress DNS bug: " + address,
+//                    ex
+//                );
+//                return false;
+//            }
+//        }
+//        return result;
     }
 
     @Override
